@@ -5,21 +5,27 @@ import { HABIT_VALIDATION_SCHEMA } from '../../utils/validationSchemas'
 import { HABIT_FREQUENCIES } from '../../constants'
 import styles from './NewHabit.module.css'
 
+import type { FormikHelpers } from 'formik'
+import type { CreateHabitDto } from '../../types'
+
 function NewHabit () {
   const dispatch = useDispatch()
 
-  const initialValues = {
+  const initialValues: CreateHabitDto = {
     title: '',
     frequency: HABIT_FREQUENCIES[0],
     isActive: false
   }
 
-  const handleSubmit = (values, formikBag) => {
+  const handleSubmit = (
+    values: CreateHabitDto,
+    formikBag: FormikHelpers<CreateHabitDto>
+  ) => {
     dispatch(createHabitThunk(values))
     formikBag.resetForm()
   }
   return (
-    <Formik
+    <Formik<CreateHabitDto>
       initialValues={initialValues}
       onSubmit={handleSubmit}
       validationSchema={HABIT_VALIDATION_SCHEMA}
