@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { FaCheck } from 'react-icons/fa'
 import { RxCross2 } from 'react-icons/rx'
-import { useDispatch, useSelector } from 'react-redux'
 import {
   deleteHabitThunk,
   getHabitThunk,
@@ -9,15 +8,18 @@ import {
 } from '../../store/slices/habitsSlice'
 import styles from './HabitsList.module.css'
 
+import type { HabitId } from '../../types'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
+
 function HabitsList () {
-  const dispatch = useDispatch()
-  const habits = useSelector(state => state.habits.habits)
+  const dispatch = useAppDispatch()
+  const habits = useAppSelector(state => state.habits.habits)
 
   useEffect(() => {
     dispatch(getHabitThunk())
   }, [])
 
-  const toggleActive = (id, isActive) => {
+  const toggleActive = (id: HabitId, isActive: boolean) => {
     dispatch(updateHabitThunk({ id, updatedHabit: { isActive } }))
   }
 

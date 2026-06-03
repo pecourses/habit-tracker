@@ -1,7 +1,10 @@
 import axios from 'axios'
 
-export function normalizeError (err) {
-  if (axios.isAxiosError(err)) {
+import type { ApiError, LoadingError } from '../types'
+
+export function normalizeError (err: unknown): LoadingError {
+  // typeguard
+  if (axios.isAxiosError<ApiError>(err)) {
     return {
       message: err.response?.data?.message ?? err.message,
       status: err.response ? `${err.response.status}` : 'AXIOS_ERROR'

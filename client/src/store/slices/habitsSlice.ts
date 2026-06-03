@@ -2,37 +2,57 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { normalizeError } from '../../utils/normalizeError'
 import * as API from '../../api'
 
+import type {
+  Habit,
+  CreateHabitDto,
+  HabitId,
+  LoadingError,
+  UpdateHabitDto
+} from '../../types'
+
 const HABITS_SLICE_NAME = 'habits'
 
-const initialState = {
+interface HabitsState {
+  habits: Habit[]
+  error: LoadingError | null
+  isFetching: boolean
+}
+
+const initialState: HabitsState = {
   habits: [],
   error: null,
   isFetching: false
 }
 
-export const getHabitThunk = createAsyncThunk(
-  `${HABITS_SLICE_NAME}/get`,
-  async (_, { rejectWithValue }) => {
-    try {
-      return await API.getHabits()
-    } catch (err) {
-      return rejectWithValue(normalizeError(err))
-    }
+export const getHabitThunk = createAsyncThunk<
+  Habit[],
+  void,
+  { rejectValue: LoadingError }
+>(`${HABITS_SLICE_NAME}/get`, async (_, { rejectWithValue }) => {
+  try {
+    return await API.getHabits()
+  } catch (err) {
+    return rejectWithValue(normalizeError(err))
   }
-)
+})
 
-export const createHabitThunk = createAsyncThunk(
-  `${HABITS_SLICE_NAME}/create`,
-  async (newHabit, { rejectWithValue }) => {
-    try {
-      return await API.createHabit(newHabit)
-    } catch (err) {
-      return rejectWithValue(normalizeError(err))
-    }
+export const createHabitThunk = createAsyncThunk<
+  Habit, // fulfilled payload
+  CreateHabitDto, // thunk payload
+  { rejectValue: LoadingError } // для rejectValue - rejected payload
+>(`${HABITS_SLICE_NAME}/create`, async (newHabit, { rejectWithValue }) => {
+  try {
+    return await API.createHabit(newHabit)
+  } catch (err) {
+    return rejectWithValue(normalizeError(err))
   }
-)
+})
 
-export const updateHabitThunk = createAsyncThunk(
+export const updateHabitThunk = createAsyncThunk<
+  Habit,
+  { id: HabitId; updatedHabit: UpdateHabitDto },
+  { rejectValue: LoadingError }
+>(
   `${HABITS_SLICE_NAME}/update`,
   async ({ id, updatedHabit }, { rejectWithValue }) => {
     try {

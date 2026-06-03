@@ -1,15 +1,15 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik'
-import { useDispatch } from 'react-redux'
 import { createHabitThunk } from '../../store/slices/habitsSlice'
 import { HABIT_VALIDATION_SCHEMA } from '../../utils/validationSchemas'
 import { HABIT_FREQUENCIES } from '../../constants'
+import { useAppDispatch } from '../../store/hooks'
 import styles from './NewHabit.module.css'
 
 import type { FormikHelpers } from 'formik'
 import type { CreateHabitDto } from '../../types'
 
 function NewHabit () {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const initialValues: CreateHabitDto = {
     title: '',
