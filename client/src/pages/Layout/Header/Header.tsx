@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom'
 import classNames from 'classnames'
 import styles from './Header.module.css'
 
-const navLinkClassName = ({ isActive }) =>
+const navLinkClassName = ({ isActive }: { isActive: boolean }) =>
   classNames(styles.link, { [styles.active]: isActive })
 
 function Header () {

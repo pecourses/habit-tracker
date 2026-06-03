@@ -1,1 +1,1 @@
-export const HABIT_FREQUENCIES = ['daily', 'weekly', 'monthly']
+export const HABIT_FREQUENCIES = ['daily', 'weekly', 'monthly'] as const
